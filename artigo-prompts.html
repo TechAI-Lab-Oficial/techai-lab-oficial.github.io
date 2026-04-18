@@ -287,3 +287,134 @@ Exemplo 1 (saída):
 Risco: ...
 
 Agora faça para este texto:
+[COLE AQUI O TEXTO]</code></pre>
+
+    <p>O segredo e manter exemplos pequenos e consistentes. Se voce der exemplos contraditorios, o modelo vai “média-los” e o resultado perde nitidez.</p>
+
+    <h2>3. Chain of Thought (Cadeia de Pensamento): use como engenharia, nao como teatro</h2>
+    <p>Chain of Thought (CoT) e a ideia de incentivar o modelo a <strong>decompor</strong> um problema em etapas. Isso melhora respostas em tarefas multi-passos porque reduz saltos e aumenta coerencia. Na pratica, o que voce quer nao e um texto longo “pensando”, e sim <strong>estrutura de decisao</strong>.</p>
+    <p>Uma forma moderna de usar essa ideia e pedir <strong>passos de alto nivel</strong> e um <strong>resultado verificavel</strong>:</p>
+
+    <pre><code>Resolva o problema seguindo estes passos:
+1) Liste as suposicoes e o que falta.
+2) Proponha um plano em 3–5 etapas (alto nivel).
+3) Execute o plano e entregue a resposta final.
+4) Faça uma checagem final: a resposta atende os criterios?
+
+Formato de saída:
+- Plano (3–5 bullets)
+- Resposta final
+- Checagem (2 bullets)</code></pre>
+
+    <div class="highlight-box" style="border-left-color: var(--cyan);">
+      <strong>Por que isso funciona:</strong> voce cria um mini “sistema de controle”. O modelo planeja, executa e se audita. Isso tende a reduzir erro bobo e excesso de confianca.
+    </div>
+
+    <h2>4. Como extrair mais logica (Claude e GPT-4o)</h2>
+    <p>Modelos fortes respondem bem a comandos com: <strong>contexto minimo suficiente</strong>, <strong>criterios objetivos</strong> e <strong>checagem</strong>. Um prompt que costuma elevar o rigor e:</p>
+
+    <pre><code>Você é um engenheiro de raciocínio lógico.
+
+Contexto:
+- (defina o domínio e forneça dados: tabela, requisitos, restrições)
+
+Objetivo:
+- (o que precisa ser decidido/produzido)
+
+Restrições:
+- Não invente fatos. Se faltar dado, pergunte.
+- Use apenas as informações fornecidas.
+
+Critérios de aceitação:
+- (ex: deve incluir trade-offs, deve ter 3 opções, deve estimar risco)
+
+Saída:
+- Opção A (prós/cons/risco)
+- Opção B (prós/cons/risco)
+- Recomendação (1 parágrafo)
+- Perguntas pendentes (se houver)</code></pre>
+
+    <h2>5. Reduzindo alucinacao: delimitar, verificar, pedir lacunas</h2>
+    <p>LLMs erram mais quando o prompt deixa lacunas. Tres alavancas simples ajudam muito:</p>
+    <table class="logic-table">
+      <thead>
+        <tr>
+          <th>Alavanca</th>
+          <th>Como pedir</th>
+          <th>Efeito</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Delimitar entrada</strong></td>
+          <td>“Use apenas o texto entre &lt;dados&gt;...&lt;/dados&gt;”</td>
+          <td>Menos invenção fora do contexto.</td>
+        </tr>
+        <tr>
+          <td><strong>Checagem final</strong></td>
+          <td>“Liste 3 possiveis falhas e como mitiga-las.”</td>
+          <td>Forca revisao e consistencia.</td>
+        </tr>
+        <tr>
+          <td><strong>Perguntas pendentes</strong></td>
+          <td>“Se faltar info, pergunte antes de concluir.”</td>
+          <td>Evita resposta confiante sem base.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>6. Few-shot + formato fixo: consistencia industrial</h2>
+    <p>Para fluxos repetidos (resumos, classificacao, extracao), combine few-shot com um formato fixo. O ideal e escolher um formato que seja facil de validar: listas, chaves, checklists.</p>
+    <p>Exemplo: extrair informacoes de um texto para um schema:</p>
+
+    <pre><code>Extraia as informacoes e responda exatamente neste JSON:
+{
+  "tema": "",
+  "tese": "",
+  "evidencias": ["", ""],
+  "riscos": ["", ""],
+  "perguntas": ["", ""]
+}
+
+Texto:
+---
+(cole aqui)
+---</code></pre>
+
+    <h2>Conclusao: prompt e design de sistema</h2>
+    <p>Um bom prompt faz duas coisas: <strong>direciona</strong> (o que importa) e <strong>protege</strong> (contra erro e ambiguidade). Quando voce domina few-shot, decomposicao e criterios de aceitacao, modelos como Claude e GPT-4o deixam de ser “chat” e viram uma camada de execucao intelectual.</p>
+    <p>O resultado nao e apenas texto melhor. E <strong>decisao melhor</strong>, com menos retrabalho e mais confiabilidade.</p>
+
+    <footer>
+      © 2026 TechAI_Lab - Especificacao clara vira raciocinio claro.
+    </footer>
+  </div>
+
+  <script>
+    const progressBar = document.getElementById('readingProgressBar');
+    const toTopBtn = document.getElementById('toTopBtn');
+
+    function updateReadingUI() {
+      const doc = document.documentElement;
+      const scrollTop = doc.scrollTop || document.body.scrollTop;
+      const scrollHeight = doc.scrollHeight || document.body.scrollHeight;
+      const clientHeight = doc.clientHeight || window.innerHeight;
+      const scrollable = Math.max(1, scrollHeight - clientHeight);
+      const progress = Math.min(100, Math.max(0, (scrollTop / scrollable) * 100));
+
+      progressBar.style.width = progress.toFixed(2) + '%';
+
+      if (scrollTop > 420) toTopBtn.classList.add('is-visible');
+      else toTopBtn.classList.remove('is-visible');
+    }
+
+    window.addEventListener('scroll', updateReadingUI, { passive: true });
+    window.addEventListener('resize', updateReadingUI);
+    updateReadingUI();
+
+    toTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
