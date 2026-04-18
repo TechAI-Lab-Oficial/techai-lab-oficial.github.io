@@ -102,7 +102,7 @@
     }
     .btn-read:hover { opacity: 0.9; }
 
-    footer { padding: 4rem 2rem; border-top: 1px solid var(--border); text-align: center; color: var(--muted); font-size: 14px; }
+    footer { padding: 4rem 2rem; border-top: 1px solid var(--border); text-align: center; color: var(--muted); font-size: 14px; margin-top: 5rem; }
   </style>
 </head>
 <body>
@@ -113,7 +113,10 @@
         <div class="logo-icon">T</div>
         <span class="gradient-text">TechAI_Lab</span>
       </div>
-      <button style="background: var(--bg3); color: white; border: 1px solid var(--border); padding: 8px 16px; border-radius: 8px; cursor: pointer;">Menu</button>
+      <div style="display: flex; gap: 20px;">
+        <a href="#artigos" style="color: var(--muted); font-size: 14px;">Artigos</a>
+        <a href="#" style="color: var(--muted); font-size: 14px;">Sobre</a>
+      </div>
     </div>
   </nav>
 
@@ -124,21 +127,22 @@
     </div>
   </header>
 
-  <section id="artigos" style="padding-bottom: 8rem;">
+  <!-- SEÇÃO DE ARTIGOS (AGORA NO LUGAR CERTO) -->
+  <section id="artigos">
     <div class="container">
       <div class="section-tag">Conteúdo Exclusivo</div>
       <h2 style="font-family: 'Space Grotesk'; font-size: 2rem;">Artigos Recentes</h2>
 
       <div class="articles-grid">
         
-        <!-- SEU NOVO CARD DE LÓGICA (DESTAQUE) -->
+        <!-- CARD DE LÓGICA -->
         <div class="article-card" style="border: 1px solid var(--purple);">
           <div style="color: var(--purple); font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 1rem; letter-spacing: 1px;">
             Lógica & IA
           </div>
           <h3 style="font-family: 'Space Grotesk'; font-size: 22px; margin-bottom: 1rem;">Se <span style="color: var(--blue)">p → q</span> então a IA decide</h3>
           <p style="color: var(--muted); font-size: 15px; margin-bottom: 2rem;">
-            A lógica proposicional é a gramática oculta das IAs modernas. Descubra como premissas matemáticas se transformam em decisões de algoritmos complexos.
+            A lógica proposicional é a gramática oculta das IAs modernas. Descubra como premissas matemáticas se transformam em decisões.
           </p>
           <a href="artigo-logica.html" class="btn-read">Ler artigo completo ↗</a>
         </div>
