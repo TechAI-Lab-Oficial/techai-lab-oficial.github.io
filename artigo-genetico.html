@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Algoritmos Geneticos: Darwin dentro do processador — TechAI_Lab</title>
+
+  <meta name="description" content="Um guia tecnico sobre Algoritmos Geneticos: selecao natural, mutacao e crossover como estrategia de busca. Entenda a ponte entre biologia evolutiva e otimizacao de software." />
+
+  <meta property="og:site_name" content="TechAI_Lab" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Algoritmos Geneticos: Darwin dentro do processador | TechAI_Lab" />
+  <meta property="og:description" content="Selecao, mutacao e recombinacao aplicadas a software: como algoritmos geneticos exploram espacos de busca e acham solucoes competitivas." />
+  <meta property="og:image" content="og-techai-lab.svg" />
+  <meta property="og:image:type" content="image/svg+xml" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Algoritmos Geneticos: Darwin dentro do processador | TechAI_Lab" />
+  <meta name="twitter:description" content="Como mutacao, crossover e selecao natural viram uma maquina de otimizacao em IA e engenharia." />
+  <meta name="twitter:image" content="og-techai-lab.svg" />
+  
+  <!-- Fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===== VARIÁVEIS & RESET ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --bg:      #0a0a0f;
+      --bg2:     #0f0f1a;
+      --blue:    #4f8ef7;
+      --purple:  #8b5cf6;
+      --cyan:    #06b6d4;
+      --text:    #e2e8f0;
+      --muted:   #94a3b8;
+      --border:  #1e2a3a;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    /* ===== READING PROGRESS + TO TOP ===== */
+    .reading-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.05);
+      z-index: 220;
+    }
+    .reading-progress__bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--purple), var(--blue), var(--cyan));
+      box-shadow: 0 0 18px rgba(139, 92, 246, 0.45);
+      transition: width 0.08s linear;
+    }
+
+    .to-top {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 210;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(79, 142, 247, 0.18);
+      background: rgba(15, 15, 26, 0.82);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 650;
+      text-decoration: none;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+    }
+    .to-top:hover { border-color: rgba(139, 92, 246, 0.45); }
+    .to-top.is-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .to-top svg { width: 16px; height: 16px; stroke: var(--text); opacity: 0.92; }
+
+    .container { max-width: 800px; margin: 0 auto; padding: 4rem 2rem; }
+
+    /* ===== CABEÇALHO DO ARTIGO ===== */
+    .back-link {
+      color: var(--cyan);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 3rem;
+      transition: transform 0.2s;
+    }
+    .back-link:hover { transform: translateX(-5px); }
+
+    .article-tag {
+      color: var(--cyan);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, var(--purple), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .meta {
+      display: flex;
+      gap: 20px;
+      color: var(--muted);
+      font-size: 14px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    /* ===== CONTEÚDO ===== */
+    h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.8rem;
+      margin: 3.5rem 0 1.5rem;
+      color: #fff;
+      border-left: 4px solid var(--cyan);
+      padding-left: 10px;
+    }
+
+    h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem;
+      margin: 2rem 0 1rem;
+      color: #fff;
+    }
+
+    p { margin-bottom: 1.5rem; font-size: 1.15rem; color: var(--muted); text-align: justify; }
+    strong { color: #fff; font-weight: 600; }
+
+    .highlight-box {
+      background: var(--bg2);
+      border-left: 4px solid var(--purple);
+      padding: 2rem;
+      margin: 2.5rem 0;
+      border-radius: 0 16px 16px 0;
+    }
+
+    code {
+      background: #1e2a3a;
+      color: var(--cyan);
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.95em;
+    }
+
+    .logic-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 2rem 0;
+      background: var(--bg2);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .logic-table th, .logic-table td {
+      padding: 1rem;
+      border: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+    .logic-table th { background: var(--border); color: var(--cyan); text-transform: uppercase; letter-spacing: 1px; font-size: 12px; }
+
+    footer {
+      text-align: center;
+      padding: 5rem 0;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="reading-progress" aria-hidden="true">
+    <div class="reading-progress__bar" id="readingProgressBar"></div>
+  </div>
+
+  <button class="to-top" id="toTopBtn" type="button" aria-label="Voltar ao topo">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 19V6" />
+      <path d="M7 11l5-5 5 5" />
+    </svg>
+    Topo
+  </button>
+
+  <div class="container">
+    <a href="index.html" class="back-link">← Voltar para a Home</a>
+
+    <div class="article-tag">Otimizacao Evolutiva</div>
+    <h1>Algoritmos Geneticos: a Evolucao de Darwin dentro do seu Processador</h1>
+
+    <div class="meta">
+      <span>📅 18 de Abril, 2026</span>
+      <span>⏱️ 12 min de leitura</span>
+      <span>✍️ Por TechAI_Lab Team</span>
+    </div>
+
+    <p>Nem toda IA aprende por gradientes. Existe uma outra familia de ideias, mais antiga do que deep learning, que troca derivadas por um principio brutal: <strong>sobrevive quem resolve melhor</strong>. Algoritmos Geneticos (AGs) sao um jeito de colocar Darwin para trabalhar no silicio: gerar variacoes, testar, selecionar e recombinar ate encontrar solucoes competitivas.</p>
+
+    <p>Na engenharia, a pergunta raramente e “qual e a resposta exata?”. Normalmente e “qual e a melhor configuracao que cabe em tempo e custo?”. E esse e o habitat natural dos AGs: <strong>otimizacao de software</strong>, busca em espacos complexos e problemas onde o gradiente nao e acessivel, nao e estavel ou nao existe.</p>
+
+    <div class="highlight-box">
+      <strong>Intuicao central:</strong> trate cada solucao como um “organismo” (um vetor de parametros). Defina uma funcao de aptidao (fitness). Em cada geracao, selecione os mais aptos, gere descendentes por crossover e introduza mutacoes para explorar novas regioes do espaco.
+    </div>
+
+    <h2>1. Biologia evolutiva em tres operadores</h2>
+    <p>Em biologia, populacoes evoluem por variacao hereditaria e selecao. Em AGs, voce implementa isso com tres mecanismos:</p>
+
+    <table class="logic-table">
+      <thead>
+        <tr>
+          <th>Conceito</th>
+          <th>Na biologia</th>
+          <th>No algoritmo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Selecao</strong></td>
+          <td>Reproducao favorece mais aptos</td>
+          <td>Escolhe individuos com maior fitness para gerar descendentes</td>
+        </tr>
+        <tr>
+          <td><strong>Crossover</strong></td>
+          <td>Recombinacao genetica</td>
+          <td>Combina partes de duas solucoes para criar uma nova</td>
+        </tr>
+        <tr>
+          <td><strong>Mutacao</strong></td>
+          <td>Erros/variacoes aleatorias no DNA</td>
+          <td>Pequenas alteracoes aleatorias nos parametros para explorar</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>O equilibrio e delicado: selecao e “exploit” (apertar o que ja funciona), mutacao e “explore” (buscar novidade), crossover e o acelerador que mistura bons blocos para tentar criar combinacoes superiores.</p>
+
+    <h2>2. Como uma solucao vira um “genoma”</h2>
+    <p>Para rodar um AG, voce precisa codificar uma solucao em um vetor: bits, inteiros, reais, ou estruturas mistas. Em software, isso pode ser:</p>
+    <ul style="margin: 0 0 1.5rem 1.2rem; color: var(--muted); font-size: 1.05rem;">
+      <li>hiperparametros de um modelo (taxa de aprendizado, profundidade, regularizacao);</li>
+      <li>regras/heuristicas (pesos de um score, thresholds, prioridades);</li>
+      <li>configuracoes de um sistema (tamanho de batch, paralelismo, cache, timeouts);</li>
+      <li>solucoes combinatorias (roteamento, escalonamento, alocacao).</li>
+    </ul>
+    <p>Esse vetor e o que o algoritmo sabe manipular. O resto e engenharia: como avaliar fitness de maneira confiavel e com custo aceitavel.</p>
+
+    <h2>3. Fitness: a ponte entre biologia e otimizacao de software</h2>
+    <p>Na natureza, fitness e sobrevivencia e reproducao. Em engenharia, fitness e uma funcao objetivo: <strong>qualidade</strong> com penalidades de <strong>custo</strong>. Um bom fitness costuma refletir trade-offs reais:</p>
+    <p><code>fitness = qualidade − λ · custo</code></p>
+    <p>Exemplos: acuracia com penalidade por latencia; throughput com penalidade por memoria; lucro com penalidade por risco.</p>
+
+    <div class="highlight-box" style="border-left-color: var(--cyan);">
+      <strong>Ponto estrategico:</strong> AGs nao “sabem” o que e bom. Eles apenas obedecem ao fitness. Se o fitness estiver mal definido, o algoritmo vai otimizar a coisa errada com eficiencia assustadora.
+    </div>
+
+    <h2>4. Por que usar AG quando existe Gradiente Descendente?</h2>
+    <p>Gradientes sao fantasticos quando voce tem uma funcao suave e derivavel e quer ajustar pesos continuamente. Mas muitos problemas do mundo real sao:</p>
+    <ul style="margin: 0 0 1.5rem 1.2rem; color: var(--muted); font-size: 1.05rem;">
+      <li><strong>nao derivaveis</strong> (regras discretas, escolhas de arquitetura);</li>
+      <li><strong>ruidosos</strong> (avaliacao estocastica, ambientes variaveis);</li>
+      <li><strong>multimodais</strong> (varios vales competitivos);</li>
+      <li><strong>caros</strong> (cada avaliacao exige executar um pipeline completo).</li>
+    </ul>
+    <p>Nesses casos, AGs fornecem uma estrategia robusta de busca global: eles exploram varias regioes em paralelo e nao dependem de derivadas.</p>
+
+    <h2>5. O loop evolutivo (em forma de engenharia)</h2>
+    <p>Um AG pode ser descrito como um pipeline repetido:</p>
+    <p><code>inicializar populacao → avaliar fitness → selecionar → crossover → mutar → repetir</code></p>
+    <p>Em software, isso parece uma esteira de experimentos. E aqui surge a ponte com alta performance: para evoluir rapido, voce precisa de <strong>infraestrutura</strong> (execucao paralela, cache, reproducibilidade, logs e comparacao justa).</p>
+
+    <h3>Regra pratica</h3>
+    <p>Se avaliar fitness e caro, voce nao pode desperdiçar geracoes. Use populacao pequena e criterios de parada claros. Se avaliar fitness e barato, aumente diversidade e explore mais.</p>
+
+    <h2>Conclusao: evolucao como motor de busca</h2>
+    <p>Algoritmos Geneticos sao uma forma de colocar a intuicao biologica a servico da engenharia: variacao + selecao. Eles nao substituem toda IA moderna, mas cobrem um territorio essencial: problemas onde nao ha gradiente util, onde o espaco e discreto, e onde a melhor solucao emerge por combinacao de “blocos” bons.</p>
+    <p>Quando voce entende AGs, voce ganha uma lente poderosa: <strong>otimizar e evoluir</strong>. E, muitas vezes, a diferenca entre um sistema comum e um sistema de elite e justamente essa: usar busca inteligente para encontrar configuracoes que ninguem chegaria “na mao”.</p>
+
+    <footer>
+      © 2026 TechAI_Lab - Evolucao aplicada a performance.
+    </footer>
+  </div>
+
+  <script>
+    const progressBar = document.getElementById('readingProgressBar');
+    const toTopBtn = document.getElementById('toTopBtn');
+
+    function updateReadingUI() {
+      const doc = document.documentElement;
+      const scrollTop = doc.scrollTop || document.body.scrollTop;
+      const scrollHeight = doc.scrollHeight || document.body.scrollHeight;
+      const clientHeight = doc.clientHeight || window.innerHeight;
+      const scrollable = Math.max(1, scrollHeight - clientHeight);
+      const progress = Math.min(100, Math.max(0, (scrollTop / scrollable) * 100));
+
+      progressBar.style.width = progress.toFixed(2) + '%';
+
+      if (scrollTop > 420) toTopBtn.classList.add('is-visible');
+      else toTopBtn.classList.remove('is-visible');
+    }
+
+    window.addEventListener('scroll', updateReadingUI, { passive: true });
+    window.addEventListener('resize', updateReadingUI);
+    updateReadingUI();
+
+    toTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
