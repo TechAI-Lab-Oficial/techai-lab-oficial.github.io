@@ -3,70 +3,57 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Biofeedback e Código: Programando em Flow — TechAI_Lab</title>
-  
+  <title>Biofeedback e Flow — TechAI_Lab</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
-
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    :root {
-      --bg: #0a0a0f; --bg2: #0f0f1a; --green: #3fb950;
-      --text: #e2e8f0; --muted: #94a3b8; --border: #1e2a3a;
-    }
-    html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.8; overflow-x: hidden; }
+    :root { --bg: #0a0a0f; --bg2: #0f0f1a; --green: #3fb950; --text: #e2e8f0; --muted: #94a3b8; --border: #1e2a3a; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.8; }
     .reading-progress { position: fixed; top: 0; left: 0; right: 0; height: 4px; background: rgba(255,255,255,0.05); z-index: 220; }
-    .reading-progress__bar { height: 100%; width: 0%; background: var(--green); box-shadow: 0 0 18px rgba(63, 185, 80, 0.4); }
-    .to-top { position: fixed; right: 18px; bottom: 18px; z-index: 210; display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem; padding: 10px 12px; border-radius: 14px; border: 1px solid rgba(63, 185, 80, 0.2); background: rgba(15,15,26,0.8); color: var(--text); font-size: 13px; font-weight: 650; text-decoration: none; opacity: 0; transform: translateY(10px); transition: all 0.25s ease; cursor: pointer; backdrop-filter: blur(10px); }
-    .to-top.is-visible { opacity: 1; transform: translateY(0); }
+    .reading-progress__bar { height: 100%; width: 0%; background: var(--green); box-shadow: 0 0 15px var(--green); }
     .container { max-width: 800px; margin: 0 auto; padding: 4rem 2rem; }
-    .back-link { color: var(--green); text-decoration: none; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 3rem; }
-    .article-tag { color: var(--green); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem; }
-    h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2.2rem, 5vw, 3.5rem); line-height: 1.1; margin-bottom: 1.5rem; color: var(--green); }
-    .meta { display: flex; gap: 20px; color: var(--muted); font-size: 14px; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; margin-bottom: 3rem; }
-    h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; margin: 3.5rem 0 1.5rem; color: #fff; border-left: 4px solid var(--green); padding-left: 10px; }
-    p { margin-bottom: 1.5rem; font-size: 1.15rem; color: var(--muted); text-align: justify; }
-    .highlight-box { background: var(--bg2); border-left: 4px solid var(--green); padding: 2rem; margin: 2.5rem 0; border-radius: 0 16px 16px 0; }
-    footer { text-align: center; padding: 5rem 0; border-top: 1px solid var(--border); color: var(--muted); font-size: 14px; margin-top: 5rem; }
+    h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2rem, 5vw, 3rem); color: var(--green); margin-bottom: 2rem; }
+    h2 { color: #fff; margin: 3rem 0 1rem; border-left: 4px solid var(--green); padding-left: 15px; }
+    p { margin-bottom: 1.5rem; color: var(--muted); text-align: justify; font-size: 1.1rem; }
+    .highlight-box { border: 1px dashed var(--green); background: rgba(63, 185, 80, 0.05); padding: 2rem; border-radius: 12px; margin: 2rem 0; }
+    footer { text-align: center; padding: 3rem 0; border-top: 1px solid var(--border); margin-top: 4rem; color: var(--muted); }
   </style>
 </head>
 <body>
   <div class="reading-progress"><div class="reading-progress__bar" id="readingProgressBar"></div></div>
-  <button class="to-top" id="toTopBtn">Topo</button>
-
   <div class="container">
-    <a href="index.html" class="back-link">← Voltar para a Home</a>
-    <div class="article-tag">Performance Humana</div>
-    <h1>Biofeedback e Código: Estado de Flow</h1>
-    <div class="meta"><span>✍️ TechAI_Lab Team</span><span>⏱️ 7 min de leitura</span></div>
+    <a href="index.html" style="color:var(--green);text-decoration:none;">← Voltar</a>
+    <h1 style="margin-top:2rem;">Biofeedback e Código: O Estado de Flow</h1>
+    
+    <p>Programar em estado de **flow** é trabalhar com foco profundo, onde a percepção de tempo desaparece e a produtividade atinge seu ápice. O biofeedback entra como uma camada de hardware para o seu cérebro, ajudando a sustentar esse estado através da autorregulação fisiológica.</p>
 
-    <p>Programar em estado de <strong>flow</strong> é trabalhar com foco profundo e feedback rápido. O biofeedback ajuda a perceber sinais de estresse para sustentar esse estado.</p>
-
-    <h2>O que é Flow</h2>
-    <p>É a absorção total na tarefa. Na programação, acontece quando o problema desafia a medida certa e o retorno sobre cada linha de código é imediato.</p>
+    <h2>1. A Ciência do Flow na Engenharia</h2>
+    <p>Flow é um estado de concentração total. Para um desenvolvedor, isso significa estar tão imerso no código que a sintaxe flui sem esforço consciente. Esse estado surge no equilíbrio perfeito entre o desafio da tarefa e a sua habilidade. Se o desafio é alto demais, surge a ansiedade; se é baixo, surge o tédio. O biofeedback ajuda a identificar esses desvios em tempo real.</p>
 
     <div class="highlight-box">
-      <strong>Biofeedback:</strong> Uso de sinais (HRV, respiração) para ajustar seu estado corporal e criar um ambiente favorável ao foco sustentado.
+      <strong>Onde entra o Biofeedback:</strong> É o uso de sensores (batimento cardíaco, variabilidade cardíaca ou ondas cerebrais) para mostrar como seu corpo reage ao código. Se sua HRV (Variabilidade da Frequência Cardíaca) cai drasticamente, você está entrando em estresse, e o flow será quebrado.
     </div>
 
-    <h2>Protocolo de Trabalho</h2>
-    <p>1. Escolha tarefa única. 2. Elimine notificações. 3. Respire por 2 minutos. 4. Programe em blocos de 60 min. 5. Use testes como feedback.</p>
+    <h2>2. Otimizando o Ambiente Interno</h2>
+    <p>Programar para entrar em flow exige reduzir o ruído. Defina uma tarefa clara, elimine notificações e crie ciclos de feedback imediato (escreve, testa, corrige). Mas o mais importante é o estado corporal: respiração curta e tensão muscular são os inimigos silenciosos da lógica complexa.</p>
+    <p>Com o biofeedback, você treina seu sistema nervoso para permanecer no estado parassimpático (calma e foco). Dois minutos de respiração guiada antes de um "Deep Work" podem aumentar a probabilidade de entrar em flow em até 40%.</p>
 
-    <footer>© 2026 TechAI_Lab - Alta performance mental.</footer>
+    <h2>3. Protocolo Prático de 2026</h2>
+    <p>O fluxo de trabalho ideal combina cognição e fisiologia: escolha uma tarefa bem definida, remova distrações e use 5 minutos de coerência cardíaca. Programe em blocos de 60 minutos e use logs ou testes rápidos para manter o cérebro engajado pelo progresso contínuo.</p>
+
+    <h2>Conclusão</h2>
+    <p>Flow não é sorte; é engenharia. Quando mente e corpo cooperam através de dados fisiológicos e organização técnica, programar deixa de ser cansativo e passa a ser um processo contínuo de criação pura.</p>
+
+    <footer>© 2026 TechAI_Lab - Performance Mental Aplicada.</footer>
   </div>
   <script>
-    const progressBar = document.getElementById('readingProgressBar');
-    const toTopBtn = document.getElementById('toTopBtn');
-    window.addEventListener('scroll', () => {
-      const doc = document.documentElement;
-      const progress = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100;
-      progressBar.style.width = progress + '%';
-      if (doc.scrollTop > 400) toTopBtn.classList.add('is-visible');
-      else toTopBtn.classList.remove('is-visible');
-    });
-    toTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    window.onscroll = () => {
+      let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      document.getElementById("readingProgressBar").style.width = (winScroll / height) * 100 + "%";
+    };
   </script>
 </body>
 </html>
