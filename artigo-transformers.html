@@ -4,72 +4,58 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Atenção é Tudo: Por dentro do Transformer — TechAI_Lab</title>
-  
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
-
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    :root {
-      --bg: #0a0a0f; --bg2: #0f0f1a; --blue: #4f8ef7; --purple: #8b5cf6;
-      --cyan: #bc8cff; --text: #e2e8f0; --muted: #94a3b8; --border: #1e2a3a;
-    }
-    html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.8; overflow-x: hidden; }
+    :root { --bg: #0a0a0f; --bg2: #0f0f1a; --purple: #8b5cf6; --text: #e2e8f0; --muted: #94a3b8; --border: #1e2a3a; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.8; }
     .reading-progress { position: fixed; top: 0; left: 0; right: 0; height: 4px; background: rgba(255,255,255,0.05); z-index: 220; }
-    .reading-progress__bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--purple), var(--blue)); box-shadow: 0 0 18px rgba(139, 92, 246, 0.4); }
-    .to-top { position: fixed; right: 18px; bottom: 18px; z-index: 210; display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem; padding: 10px 12px; border-radius: 14px; border: 1px solid rgba(139, 92, 246, 0.2); background: rgba(15,15,26,0.8); color: var(--text); font-size: 13px; font-weight: 650; text-decoration: none; opacity: 0; transform: translateY(10px); transition: all 0.25s ease; cursor: pointer; backdrop-filter: blur(10px); }
-    .to-top.is-visible { opacity: 1; transform: translateY(0); }
+    .reading-progress__bar { height: 100%; width: 0%; background: var(--purple); box-shadow: 0 0 15px var(--purple); }
     .container { max-width: 800px; margin: 0 auto; padding: 4rem 2rem; }
-    .back-link { color: var(--purple); text-decoration: none; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 3rem; }
-    .article-tag { color: var(--purple); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem; }
-    h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2.2rem, 5vw, 3.5rem); line-height: 1.1; margin-bottom: 1.5rem; background: linear-gradient(135deg, var(--purple), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .meta { display: flex; gap: 20px; color: var(--muted); font-size: 14px; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; margin-bottom: 3rem; }
-    h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; margin: 3.5rem 0 1.5rem; color: #fff; border-left: 4px solid var(--purple); padding-left: 10px; }
-    p { margin-bottom: 1.5rem; font-size: 1.15rem; color: var(--muted); text-align: justify; }
-    .highlight-box { background: var(--bg2); border-left: 4px solid var(--purple); padding: 2rem; margin: 2.5rem 0; border-radius: 0 16px 16px 0; }
-    footer { text-align: center; padding: 5rem 0; border-top: 1px solid var(--border); color: var(--muted); font-size: 14px; margin-top: 5rem; }
+    h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2rem, 5vw, 3rem); background: linear-gradient(135deg, #fff, var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 2rem; }
+    h2 { color: #fff; margin: 3rem 0 1rem; border-left: 4px solid var(--purple); padding-left: 15px; }
+    p { margin-bottom: 1.5rem; color: var(--muted); text-align: justify; font-size: 1.1rem; }
+    .code-block { background: #000; padding: 20px; border-radius: 8px; font-family: monospace; color: #bc8cff; margin: 2rem 0; border: 1px solid var(--border); }
+    footer { text-align: center; padding: 3rem 0; border-top: 1px solid var(--border); margin-top: 4rem; color: var(--muted); }
   </style>
 </head>
 <body>
   <div class="reading-progress"><div class="reading-progress__bar" id="readingProgressBar"></div></div>
-  <button class="to-top" id="toTopBtn">Topo</button>
-
   <div class="container">
-    <a href="index.html" class="back-link">← Voltar para a Home</a>
-    <div class="article-tag">Arquitetura de IA</div>
-    <h1>Atenção é Tudo: Por dentro do Transformer</h1>
-    <div class="meta"><span>✍️ TechAI_Lab Team</span><span>⏱️ 10 min de leitura</span></div>
+    <a href="index.html" style="color:var(--purple);text-decoration:none;">← Voltar</a>
+    <h1 style="margin-top:2rem;">Atenção é Tudo: Por dentro do Transformer</h1>
+    
+    <p>O Transformer é a arquitetura que mudou a forma como modelos de linguagem entendem texto. Sua grande inovação foi usar **atenção** para relacionar tokens entre si em vez de depender de processamento sequencial. Isso não foi apenas uma melhoria; foi a morte da arquitetura Recorrente (RNN).</p>
 
-    <p>O <strong>Transformer</strong> é a arquitetura que mudou a forma como modelos de linguagem entendem texto. Sua grande inovação foi usar <strong>atenção</strong> para relacionar tokens entre si em vez de depender de processamento sequencial.</p>
+    <h2>1. O Fim do Gargalo Sequencial</h2>
+    <p>Antes do Transformer, modelos como RNNs e LSTMs processavam texto passo a passo. Imagine ler um livro palavra por palavra e tentar lembrar da primeira página quando chegar na última. O sinal se perdia. O Transformer resolveu esse gargalo ao analisar a sequência inteira de forma simultânea (paralelização), permitindo que o modelo aprenda relações entre palavras distantes com precisão matemática.</p>
+    <p>Essa mudança foi decisiva porque a linguagem natural não é linear. O significado de "banco" em uma frase pode depender de uma palavra que apareceu 20 posições atrás. A atenção foi desenhada para "pescar" essa relação diretamente, sem passar por todos os intermediários.</p>
 
-    <h2>O que o Transformer resolve</h2>
-    <p>Antes, modelos como RNNs processavam texto passo a passo. O Transformer resolveu esse gargalo analisando a sequência inteira simultaneamente, permitindo aprender relações entre palavras distantes com eficiência.</p>
+    <div class="code-block">Attention(Q, K, V) = softmax(QKᵀ / √dₖ)V</div>
 
-    <h2>Self-Attention</h2>
-    <p>O coração do sistema é o mecanismo de <em>self-attention</em>, que calcula a importância de cada token em relação aos outros. O modelo pergunta: “quais partes desse texto são mais relevantes para entender esta palavra agora?”.</p>
+    <h2>2. Query, Key e Value: A Lógica da Atenção</h2>
+    <p>O mecanismo de **self-attention** funciona como um sistema de busca interna. Cada palavra recebe três vetores: Query (o que ela busca), Key (o que ela oferece) e Value (a informação que ela carrega). O modelo calcula a compatibilidade entre Query e Key para decidir quanta importância (peso) dar ao Value de cada palavra vizinha.</p>
+    <p>Isso produz o que chamamos de mapas de atenção. Em uma frase como "O robô atravessou a rua porque ela estava vazia", o mecanismo de atenção faz com que o token "ela" tenha um peso altíssimo de conexão com o token "rua", resolvendo a ambiguidade semântica de forma estatística.</p>
 
-    <div class="highlight-box">
-      <strong>Multi-head Attention:</strong> O modelo usa várias “cabeças” em paralelo, cada uma aprendendo padrões diferentes (gramática, semântica, correferência).
-    </div>
+    <h2>3. Multi-Head Attention: Múltiplas Visões</h2>
+    <p>O Transformer usa várias “cabeças” de atenção em paralelo. Cada uma aprende padrões diferentes: uma foca em concordância gramatical, outra em relações temporais, e outra em entidades nomeadas. Ao combinar essas visões, o modelo constrói uma representação contextual rica e multidimensional que modelos antigos jamais conseguiriam.</p>
 
-    <h2>Positional Encodings</h2>
-    <p>Como não há recorrência, o modelo usa <em>positional encodings</em> para saber a ordem das palavras. Sem isso, "O homem mordeu o cão" seria idêntico a "O cão mordeu o homem".</p>
+    <h2>4. O Desafio do Custo Computacional</h2>
+    <p>Apesar de poderoso, o Transformer tem um custo: a complexidade da atenção é quadrática $O(n^2)$ em relação ao tamanho da sequência. Isso significa que dobrar o texto quadruplica o esforço da GPU. Por isso, em 2026, o foco mudou para variantes como *Linear Attention* e janelas deslizantes para lidar com contextos de milhões de tokens.</p>
 
-    <footer>© 2026 TechAI_Lab - Desconstruindo os gigantes da IA.</footer>
+    <h2>Conclusão</h2>
+    <p>O Transformer funciona porque transforma texto em relações. Se o título parece poético, a ideia é técnica: no Transformer, atenção não é um detalhe — é o motor central que tornou a IA moderna possível. Ele permitiu escala, e a escala permitiu a emergência da inteligência que vemos hoje.</p>
+
+    <footer>© 2026 TechAI_Lab - Engenharia de Arquitetura.</footer>
   </div>
   <script>
-    const progressBar = document.getElementById('readingProgressBar');
-    const toTopBtn = document.getElementById('toTopBtn');
-    window.addEventListener('scroll', () => {
-      const doc = document.documentElement;
-      const progress = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100;
-      progressBar.style.width = progress + '%';
-      if (doc.scrollTop > 400) toTopBtn.classList.add('is-visible');
-      else toTopBtn.classList.remove('is-visible');
-    });
-    toTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    window.onscroll = () => {
+      let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      document.getElementById("readingProgressBar").style.width = (winScroll / height) * 100 + "%";
+    };
   </script>
 </body>
 </html>
